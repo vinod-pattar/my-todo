@@ -1,2 +1,2 @@
-# my-todo
-My ToDo application
+# My To do application
+Manage to do effortlessly
