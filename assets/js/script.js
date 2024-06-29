@@ -9,6 +9,17 @@ function updateTodo(toDo)  {
   base('ToDos').update([toDo])
 }
 
+function deleteTodo(id) {
+  base('ToDos').destroy([id], function(err, deletedRecords) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    const listItem = document.getElementById(`item-${id}`);
+    listItem.remove();
+  })
+}
+
 
 function getMyTodos(limit=undefined){
   base("ToDos")
@@ -24,10 +35,14 @@ function getMyTodos(limit=undefined){
         const myTaskList = document.getElementById("my-task-list");
   
         console.log(records);
+        if(records.length === 0){
+          myTaskList.innerHTML = "<p class='text-primary'>No to do found</p>";
+        } 
   
         records.forEach(function (record) {
           const listItem = document.createElement("li");
           listItem.classList.add("list-group-item");
+          listItem.id = `item-${record.id}`;
   
           const inputElement = document.createElement("input");
           inputElement.classList.add("form-check-input");
@@ -50,9 +65,22 @@ function getMyTodos(limit=undefined){
           labelElement.classList.add("form-check-label");
           labelElement.htmlFor = `${record.id}`;
           labelElement.innerText = `${record.fields.ToDo} - (${(new Date(record.fields.CreatedAt))?.toLocaleDateString()} at ${(new Date(record.fields.CreatedAt))?.toLocaleTimeString()})`;
+
+          const deleteButton = document.createElement("button");
+          deleteButton.classList.add("btn");
+          deleteButton.classList.add("btn-danger");
+          deleteButton.classList.add("btn-xs");
+          deleteButton.classList.add("mx-2");
+          deleteButton.innerText = "Delete";
+
+          deleteButton.addEventListener("click", (e) => {
+            deleteTodo(record.id);
+            console.log("To do deleted")
+          })
   
           listItem.append(inputElement);
           listItem.append(labelElement);
+          listItem.append(deleteButton);
   
           myTaskList.append(listItem);
         });

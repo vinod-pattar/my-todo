@@ -2,8 +2,10 @@
   "name": "my-todo",
   "version": "1.0.0",
   "description": "Manage to do effortlessly",
-  "main": "./assets/js/script.js",
+  "source": "./index.html",
   "scripts": {
+    "start": "parcel",
+    "build": "parcel build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
